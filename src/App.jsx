@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import io from 'socket.io-client'
 import Chat from './Chat'
 import music from '../public/message-tone.mp3'
-const socket = io.connect("http://localhost:4001")
+const socket = io.connect("https://websocket-api-1pok.onrender.com/")
 
 function App() {
-
   const [showChatDashboard, setShowChatDashboard] = useState(false)
   const [roomInfo, setRoomInfo] = useState({
     name: "",
