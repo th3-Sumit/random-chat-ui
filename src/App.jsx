@@ -35,7 +35,7 @@ function App() {
     )
     }
       {showChatDashboard && (
-        <Chat socket={socket} roomInfo={roomInfo} />
+        <Chat socket={socket} roomInfo={roomInfo} setRoomInfo={setRoomInfo}/>
       )}
     </>
   )

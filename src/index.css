@@ -229,3 +229,52 @@ body{
 .send-button:hover {
   background-color: #1abc9c;
 }
+
+.file-preview {
+  position: relative; /* Ensure child elements can be positioned absolutely */
+  margin: 20px;
+  max-width: 30%;
+}
+
+.file-preview img {
+  width: 100%;
+  border: 4px solid #2c3e50;
+  border-radius: 5px;
+}
+
+.file-preview p {
+  text-align: center;
+  color: black;
+}
+
+.close-preview {
+  position: absolute;
+  top: -10px;  /* Adjust to position inside or outside the border */
+  right: -10px;
+  background-color: #f03722;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 18px;
+  cursor: pointer;
+  border: 2px solid #fff;
+}
+
+.close-preview:hover {
+  background-color: #c0392b;
+}
+
+.chat-header input{
+  outline: none;
+  background-color: transparent;
+  border: none;
+  color: white;
+  padding: 20px;
+  font-family: "Sofadi One", system-ui;
+  font-size: 20px;
+  flex-shrink: 0;
+
+}
