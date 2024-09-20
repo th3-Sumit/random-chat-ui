@@ -6,21 +6,38 @@ function Chat({ socket, roomInfo, setRoomInfo }) {
     const [messageList, setmessageList] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [filePreview, setFilePreview] = useState(null); // For file preview
+    const [connectedUser, setConnectedUser] = useState(0)
     const notification = new Audio(music);
     const fileInputRef = useRef(null);
 
+    async function convertFileToBase64(file) {
+        return await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+      
+          reader.onloadend = () => {
+            resolve(reader.result);
+          };
+      
+          reader.onerror = () => {
+            reject(new Error('Failed to convert file to Base64'));
+          };
+      
+          reader.readAsDataURL(file);
+        });
+      }
+
     const send_message = async () => {
         if (message !== "" || selectedFile) {
+
             const messageData = {
                 id: Math.random(),
                 room: roomInfo?.room,
                 author: roomInfo?.name,
                 message: message,
                 time: new Date(Date.now()).getHours() % 24 + ":" + new Date(Date.now()).getMinutes(),
-                file: selectedFile ? selectedFile.name : null,
+                file: selectedFile ? await convertFileToBase64(selectedFile) : null,
             };
 
-            // Emit message or file to the server
             await socket.emit('send_message', messageData);
             setmessageList((list) => [...list, messageData]);
             notification.play();
@@ -56,6 +73,10 @@ function Chat({ socket, roomInfo, setRoomInfo }) {
 
         socket.on('receive_message', handleReceiveMsg);
 
+        socket.on('room_user_count', (data) => {
+            setConnectedUser(data)
+        })
+
         return () => {
             socket.off("receive_message", handleReceiveMsg);
         };
@@ -73,6 +94,7 @@ function Chat({ socket, roomInfo, setRoomInfo }) {
                     <input type="text" value={roomInfo?.name} onChange={(e) => setRoomInfo({...roomInfo, name: e.target.value})}/>
                     </h1>
                 <p className='room_name'>Room Id: {roomInfo?.room}</p>
+                <span>Connected user: {connectedUser}</span>
             </div>
             <div className="chat-box">
                 <div className="message-list" ref={containRef}>
@@ -80,7 +102,10 @@ function Chat({ socket, roomInfo, setRoomInfo }) {
                         <div className={`message-content ${roomInfo?.name === data?.author ? "you" : "other"}`} key={data?.id}>
                             <div className="message-bubble">
                                 <p className='user-message'>{data?.message}</p>
-                                {data.file && <p className='user-file'>{data.file}</p>}
+                                {console.log(data?.file, "++++===")}
+                                {data?.file && (
+                                    <img src={data?.file} alt="" style={{width: "200px"}}/>
+                                )}
                             </div>
                             <div className="message-details">
                                 <p className="author">{data?.author}</p>
@@ -112,6 +137,7 @@ function Chat({ socket, roomInfo, setRoomInfo }) {
                     />
                     <button className="send-button" onClick={send_message}>
                         &#9658;
+                        {/* <i class="fa-brands fa-telegram"></i> */}
                     </button>
                     <button className="send-button" style={{ marginLeft: "10px", fontSize: "30px" }} onClick={handle_file_send}>
                         +

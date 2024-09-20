@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import io from 'socket.io-client'
 import Chat from './Chat'
 import music from '../public/message-tone.mp3'
-const socket = io.connect("https://websocket-api-1pok.onrender.com/")
+const socket = io.connect("https://websocket-api-1pok.onrender.com/") //https://websocket-api-1pok.onrender.com/
 import logo from '../src/assets/logo.png'
 function App() {
   const [showChatDashboard, setShowChatDashboard] = useState(false)

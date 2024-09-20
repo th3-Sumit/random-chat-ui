@@ -276,5 +276,5 @@ body{
   font-family: "Sofadi One", system-ui;
   font-size: 20px;
   flex-shrink: 0;
-
+  max-width: fit-content;
 }
