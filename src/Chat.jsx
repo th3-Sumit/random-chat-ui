@@ -27,8 +27,7 @@ function Chat({ socket, roomInfo, setRoomInfo }) {
       }
 
     const send_message = async () => {
-        if (message !== "" || selectedFile) {
-
+        if ((message !== "" && roomInfo?.name !== "") || (selectedFile && roomInfo?.name !== '')) {
             const messageData = {
                 id: Math.random(),
                 room: roomInfo?.room,
@@ -101,11 +100,11 @@ function Chat({ socket, roomInfo, setRoomInfo }) {
                     {messageList.map((data) => (
                         <div className={`message-content ${roomInfo?.name === data?.author ? "you" : "other"}`} key={data?.id}>
                             <div className="message-bubble">
-                                <p className='user-message'>{data?.message}</p>
-                                {console.log(data?.file, "++++===")}
                                 {data?.file && (
                                     <img src={data?.file} alt="" style={{width: "200px"}}/>
                                 )}
+                                <p className='user-message'>{data?.message}</p>
+                                {console.log(data?.file, "++++===")}
                             </div>
                             <div className="message-details">
                                 <p className="author">{data?.author}</p>
@@ -142,10 +141,8 @@ function Chat({ socket, roomInfo, setRoomInfo }) {
                     <button className="send-button" style={{ marginLeft: "10px", fontSize: "30px" }} onClick={handle_file_send}>
                         +
                     </button>
-                    <button className="send-button" style={{ marginLeft: "10px", fontSize: "30px" }}>
-                    <a href="https://yoursumit.netlify.app" style={{textDecoration: "none"}} target='_blank'>
+                    <button className="send-button" onClick = {() => alert("Authentication required to see profile.")} style={{ marginLeft: "10px", fontSize: "30px" }}>
                     🙍‍♂️
-                    </a>
                     </button>
                     <input
                         type="file"
